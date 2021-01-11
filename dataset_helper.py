@@ -269,13 +269,15 @@ def get_most_frequent_classes(answer_freq_dict, threshold=1):
 def save_preprocesse_data(dataset_df, pickle_name, image_feat, name= 'train'):
     path_output_chd = config_1.path_output_chd#'/home/smfogo/Med_Visual_question_answering/Exp1_4'  #'/content/Med_Visual_question_answering/Exp1_4'#'.'  
     if name == 'train':
-        
+        handle_dirs(path_output_chd+'/train_dataset_pickle/')
+    
         dataset_df.to_pickle(path_output_chd+'/train_dataset_pickle/'+pickle_name+'.pkl')
         with open(path_output_chd+'/train_dataset_pickle/train-image-feature.pickle', 'wb') as f:
             # Pickle the 'data' dictionary using the highest protocol available.
             pickle.dump(image_feat, f, pickle.HIGHEST_PROTOCOL)
         
     elif name == 'valid':
+        handle_dirs(path_output_chd+'/valid_dataset_pickle/')
         
         dataset_df.to_pickle(path_output_chd+'/valid_dataset_pickle/'+pickle_name+'.pkl')
 
@@ -284,6 +286,7 @@ def save_preprocesse_data(dataset_df, pickle_name, image_feat, name= 'train'):
             pickle.dump(image_feat, f, pickle.HIGHEST_PROTOCOL)
         
     else: 
+        handle_dirs(path_output_chd+'/test_dataset_pickle/')
        
         dataset_df.to_pickle(path_output_chd+'/test_dataset_pickle/'+pickle_name+'.pkl')
         with open(path_output_chd+'/test_dataset_pickle/test-image-feature.pickle', 'wb') as f:
@@ -305,8 +308,7 @@ def main():
     path_output_change =config_1.path_output_change#'/home/smfogo/Med_Visual_question_answering/Exp1_4'#'/content/Med_Visual_question_answering/Exp1_4'  #'.'
     path_change = config_1.path_change#'/home/smfogo' #'/content' #'.' 
 
-    handle_dirs(path_output_change)
-    handle_dirs(path_change)
+    
 
     
  
