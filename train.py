@@ -20,12 +20,12 @@ from torch.optim.lr_scheduler import _LRScheduler
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 from data_loader import get_loader
+
 from models import VqaClassifierModel
 import config_1
-from utils import *
+
 import matplotlib.pyplot as plt
 import nltk
-
 from ray import tune
 from ray.tune import CLIReporter
 from ray.tune.schedulers import ASHAScheduler
@@ -34,6 +34,7 @@ from ray.tune.schedulers import ASHAScheduler
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 nltk.download('punkt')
 opt = config_1.parse_opt()
+
 
 
 def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch_size, num_epochs=25, alpha=.1, gamma=2): #gamma = 0.5 with the actual alpha =.25, #alpha = 0.5, 0.1 with the actual gamma=2
