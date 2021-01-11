@@ -20,6 +20,10 @@ from PIL import Image
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+def handle_dirs(dirpath):
+    if not os.path.exists(dirpath):
+        os.makedirs(dirpath)
+
 #Extract image feature
 class ResNet50(nn.Module):
     def __init__(self):
@@ -300,6 +304,10 @@ def main():
     opt = config_1.parse_opt()
     path_output_change =config_1.path_output_change#'/home/smfogo/Med_Visual_question_answering/Exp1_4'#'/content/Med_Visual_question_answering/Exp1_4'  #'.'
     path_change = config_1.path_change#'/home/smfogo' #'/content' #'.' 
+
+    handle_dirs(path_output_change)
+    handle_dirs(path_change)
+
     
  
     # le = LabelEncoder()
