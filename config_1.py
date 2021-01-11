@@ -3,28 +3,28 @@ import json
 # vqa tools - get from https://github.com/VT-vision-lab/VQA
 
 # location of the data and where to store iamge feature image
-path_output_change = '/home/smfogo/VQA_MED'#'/content/Med_Visual_question_answering/Exp1_4'  #'.'
+path_output_change = '/home/smfogo/VQA_Med'#'/content/Med_Visual_question_answering/Exp1_4'  #'.'
 path_change = '/home/smfogo' #'/content' #'.' 
-path_output_chd = '/home/smfogo/VQA_MED'  #'/content/Med_Visual_question_answering/Exp1_4'#'.'  
+path_output_chd = '/home/smfogo/VQA_Med'  #'/content/Med_Visual_question_answering/Exp1_4'#'.'  
 
-input_dir ='/home/smfogo/VQA_MED'#'/content/Med_Visual_question_answering/Exp1_3/'#'./'
+input_dir ='/home/smfogo/VQA_Med'#'/content/Med_Visual_question_answering/Exp1_3/'#'./'
 input_vqa_train = 'train_dataset_pickle/train_dataset_df.pkl'
 input_vqa_valid ='valid_dataset_pickle/valid_dataset_df.pkl'
 
 img_feat_train = 'train_dataset_pickle/train-image-feature.pickle'
 img_feat_valid ='valid_dataset_pickle/valid-image-feature.pickle'
 
-input_dir ='/home/smfogo/VQA_MED'#'/content/Med_Visual_question_answering/Exp1_3'#'./'
+input_dir ='/home/smfogo/VQA_Med'#'/content/Med_Visual_question_answering/Exp1_3'#'./'
 input_test = 'test_dataset_pickle/C1_test_dataset_df.pkl'
 img_feat_test = 'test_dataset_pickle/test-image-feature.pickle'#.csv.gz'
 #location to store the trained model
-saved_dir = '/home/smfogo/VQA_MED/'#'/content/gdrive/My Drive/vqa/'
+saved_dir = '/home/smfogo/VQA_Med/'#'/content/gdrive/My Drive/vqa/'
 
 
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    with open('/home/smfogo/VQA_MED/answer_classes.json', 'r') as j:
+    with open('/home/smfogo/VQA_Med/answer_classes.json', 'r') as j:
         answer_classes = json.load(j)
     # Data input settings
     parser.add_argument('--SEED', type=int, default=-1)
