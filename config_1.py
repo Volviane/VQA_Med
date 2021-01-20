@@ -27,7 +27,7 @@ def parse_opt():
     with open('/home/smfogo/VQA_Med/answer_classes.json', 'r') as j:
         answer_classes = json.load(j)
     # Data input settings
-    parser.add_argument('--SEED', type=int, default=97)
+    parser.add_argument('--SEED', type=int, default=42)
     parser.add_argument('--BATCH_SIZE', type=int, default=32) #32
     parser.add_argument('--VAL_BATCH_SIZE', type=int, default=32) #32
     parser.add_argument('--NUM_OUTPUT_UNITS', type=int, default=len(answer_classes))

@@ -241,7 +241,7 @@ def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch
             'optimizer': optimizer.state_dict(), 
                 'loss':epoch_loss,'valid_accuracy': best_acc1}
     # saved_dir =path_output_change #'/content/gdrive/My Drive/vqa/'  #'.'    
-    full_model_path =saved_dir+'model_state_seed_97.tar'
+    full_model_path =saved_dir+'model_state_seed_42.tar'
     #full_model_path = saved_dir+'model_state.tar'
     torch.save(state, full_model_path)
     return model
