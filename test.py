@@ -83,7 +83,7 @@ def main():
 
     model = VqaClassifierModel( opt=opt ).to(device)
     saved_dir = config.saved_dir#'/home/smfogo/Med_Visual_question_answering/Exp1_4/'#'/content/gdrive/My Drive/vqa/'
-    filename =saved_dir+'model_state.tar'
+    filename =saved_dir+'model_state_seed_97.tar'
     print("=> loading checkpoint '{}'".format(filename)) 
     checkpoint = torch.load(filename) 
     start_epoch = checkpoint['epoch'] 
