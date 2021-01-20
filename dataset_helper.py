@@ -4,6 +4,7 @@ import pandas as pd
 from collections import defaultdict
 import matplotlib.pyplot as plt
 import re
+import random
 import collections
 import pickle
 import os
@@ -308,7 +309,16 @@ def main():
     path_output_change =config_1.path_output_change#'/home/smfogo/Med_Visual_question_answering/Exp1_4'#'/content/Med_Visual_question_answering/Exp1_4'  #'.'
     path_change = config_1.path_change#'/home/smfogo' #'/content' #'.' 
 
-    
+    #set the seed
+    seed_value = opt.SEED
+    np.random.seed(seed_value)
+    random.seed(seed_value)
+    torch.manual_seed(seed_value)
+    torch.cuda.manual_seed(seed_value)
+    torch.cuda.manual_seed_all(seed_value)
+    torch.backends.cudnn.enabled = False
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
 
     
  

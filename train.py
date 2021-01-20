@@ -35,6 +35,16 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 nltk.download('punkt')
 opt = config_1.parse_opt()
 
+seed_value = opt.SEED
+np.random.seed(seed_value)
+random.seed(seed_value)
+torch.manual_seed(seed_value)
+torch.cuda.manual_seed(seed_value)
+torch.cuda.manual_seed_all(seed_value)
+torch.backends.cudnn.enabled = False
+torch.backends.cudnn.benchmark = False
+torch.backends.cudnn.deterministic = True
+
 
 
 def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch_size, num_epochs=25, alpha=.1, gamma=2): #gamma = 0.5 with the actual alpha =.25, #alpha = 0.5, 0.1 with the actual gamma=2
