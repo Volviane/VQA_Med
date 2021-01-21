@@ -30,7 +30,7 @@ class ResNet50(nn.Module):
     def __init__(self):
         super(ResNet50, self).__init__()
         model = torchvision.models.resnet50(pretrained=True)
-        self.layer1 = nn.Sequential(*list(model.children())[-1])
+        self.layer1 = nn.Sequential(*list(model.children())[:-1])
         # self.layer = nn.Sequential(*list(model.children())[4:])
         # self.layer2 = self.layer[:2]
         # self.layer3 = self.layer[2:4]
