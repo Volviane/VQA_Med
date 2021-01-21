@@ -81,7 +81,7 @@ def main():
         size = image_size )
 
     model = VqaClassifierModel( opt=opt ).to(device)
-    saved_dir = config.saved_dir#'/home/smfogo/Med_Visual_question_answering/Exp1_4/'#'/content/gdrive/My Drive/vqa/'
+    saved_dir = config_1.saved_dir#'/home/smfogo/Med_Visual_question_answering/Exp1_4/'#'/content/gdrive/My Drive/vqa/'
     filename =saved_dir+'model_state_seed_42.tar'
     print("=> loading checkpoint '{}'".format(filename)) 
     checkpoint = torch.load(filename) 
