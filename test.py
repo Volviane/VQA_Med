@@ -61,7 +61,7 @@ def main():
     input_test = config_1.input_test#'test_dataset_pickle/C1_test_dataset_df.pkl'
     img_feat_test = config_1.img_feat_test#'test_dataset_pickle/test-image-feature.pickle'#.csv.gz'
 
-    with open(path_output_change+'answer_classes.json', 'r') as j:
+    with open(path_output_change+'/answer_classes.json', 'r') as j:
         answer_classes = json.load(j)
 
     opt = config_1.parse_opt()
