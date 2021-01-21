@@ -28,15 +28,15 @@ def parse_opt():
         answer_classes = json.load(j)
     # Data input settings
     parser.add_argument('--SEED', type=int, default=97)
-    parser.add_argument('--BATCH_SIZE', type=int, default=32) #32
-    parser.add_argument('--VAL_BATCH_SIZE', type=int, default=32) #32
+    parser.add_argument('--BATCH_SIZE', type=int, default=64) #32
+    parser.add_argument('--VAL_BATCH_SIZE', type=int, default=64) #32
     parser.add_argument('--NUM_OUTPUT_UNITS', type=int, default=len(answer_classes))
     parser.add_argument('--MAX_QUESTION_LEN', type=int, default=17)
     parser.add_argument('--PRINT_INTERVAL', type=int, default=10)
     parser.add_argument('--CHECKPOINT_INTERVAL', type=int, default=50)
     parser.add_argument('--IMAGE_CHANNEL', type=int, default=2048) #512 #2624 #2048 
-    parser.add_argument('--INIT_LERARNING_RATE', type=float, default=1e-4) # 1e-4   #0.001=0.5353 #0.002=0.5415 #0.004=0.5481 #0.008= 0.5542, 0.5579
-    parser.add_argument('--LAMNDA', type=float, default=1e-3) #1e-3 #0.01 gives 0.5708 with lr_sch_step_size 2, 0.0001 gives 0.5728 same step size
+    parser.add_argument('--INIT_LERARNING_RATE', type=float, default=0.000961087) # 1e-4   #0.001=0.5353 #0.002=0.5415 #0.004=0.5481 #0.008= 0.5542, 0.5579
+    parser.add_argument('--LAMNDA', type=float, default=1.67293e-07) #1e-3 #0.01 gives 0.5708 with lr_sch_step_size 2, 0.0001 gives 0.5728 same step size
     parser.add_argument('--MOMENTUM', type=float, default=0.9)
     parser.add_argument('--DECAY_STEPS', type=int, default=200)
     parser.add_argument('--DECAY_RATE', type=float, default=0.5)
