@@ -10,7 +10,6 @@ import math
 import time
 import torch
 from data_loader import get_test_loader
-from utils import *
 import config_1
 from models import VqaClassifierModel
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
