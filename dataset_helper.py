@@ -30,32 +30,39 @@ class ResNet50(nn.Module):
     def __init__(self):
         super(ResNet50, self).__init__()
         model = torchvision.models.resnet50(pretrained=True)
-        self.layer1 = nn.Sequential(*list(model.children())[:4])
-        self.layer = nn.Sequential(*list(model.children())[4:])
-        self.layer2 = self.layer[:2]
-        self.layer3 = self.layer[2:4]
+        self.layer1 = nn.Sequential(*list(model.children())[-1])
+        # self.layer = nn.Sequential(*list(model.children())[4:])
+        # self.layer2 = self.layer[:2]
+        # self.layer3 = self.layer[2:4]
 
     def forward(self, x):
         with torch.no_grad():
             out1 = self.layer1(x)
-            out2 = self.layer2(out1)
-            out3 = self.layer3(out2)
+            # out2 = self.layer2(out1)
+            # out3 = self.layer3(out2)
 
         #global average pooling
-        out1 = out1.mean([2,3],keepdim=True)
-        out2 = out2.mean([2,3],keepdim=True)
-        out3 = out3.mean([2,3],keepdim=True)
+        # out1 = out1.mean([2,3],keepdim=True)
+        # out2 = out2.mean([2,3],keepdim=True)
+        # out3 = out3.mean([2,3],keepdim=True)
 
         # # print(out1.shape, out2.shape, out3.shape, out4.shape, out5.shape)
-        concat_features = torch.cat([out1, out2, out3], 1) #, out5, out6,out7
+        # concat_features = torch.cat([out1, out2, out3], 1) #, out5, out6,out7
 
         #l2-normalized feature vector
-        l2_norm = concat_features.norm(p=2, dim=1, keepdim=True).detach() 
-        concat_features = concat_features.div(l2_norm)               # l2-normalized feature vector
+        # l2_norm = concat_features.norm(p=2, dim=1, keepdim=True).detach() 
+        # concat_features = concat_features.div(l2_norm)               # l2-normalized feature vector
 
-        batch_size = concat_features.shape[0]
-        embedding_dim_size = concat_features.shape[1]
-        image_feature = concat_features.view(batch_size, embedding_dim_size, -1).squeeze(0) # [N, 1984, 1]
+        # batch_size = concat_features.shape[0]
+        # embedding_dim_size = concat_features.shape[1]
+        # image_feature = concat_features.view(batch_size, embedding_dim_size, -1).squeeze(0) # [N, 1984, 1]
+
+
+        #without extracting multiple layer
+
+        batch_size = out1.shape[0]
+        embedding_dim_size = out1.shape[1]
+        image_feature = out1.view(batch_size, embedding_dim_size, -1).squeeze(0) # [N, 1984, 1]
 
 
 
