@@ -47,10 +47,10 @@ torch.backends.cudnn.deterministic = True
 
 
 
-def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch_size, num_epochs=25, alpha=.1, gamma=2): #gamma = 0.5 with the actual alpha =.25, #alpha = 0.5, 0.1 with the actual gamma=2
+def train_model():
     since = time.time()
 
-    # best_model_wts = copy.deepcopy(model.state_dict())
+    
     best_acc1 = 0.0
     best_acc5 = 0.0
     
@@ -62,34 +62,25 @@ def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch
     list_train_acc1_per_epoch = []
     list_valid_acc1_per_epoch = []
 
-    # with open('answer_classes.json', 'r') as j:
-    #     answer_classes = json.load(j)
-
-    # list_train_acc5_per_epoch = []
-    # list_valid_acc5_per_epoch = []
-
-    # list_train_blue_per_epoch = []
-    # list_valid_blue_per_epoch = []
-
-    
+   
 
     model = VqaClassifierModel( opt=opt ).to(device)
 
-    criterion = nn.CrossEntropyLoss() #weight=weights.to(device)
+    criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=opt.INIT_LERARNING_RATE, weight_decay=opt.LAMNDA) 
 
-    input_dir = config_1.input_dir #'/home/smfogo/Med_Visual_question_answering/Exp1_4'#'/content/Med_Visual_question_answering/Exp1_3/'#'./'
-    input_vqa_train =config_1.input_vqa_train # 'train_dataset_pickle/train_dataset_df.pkl'
-    input_vqa_valid =config_1.input_vqa_valid#'valid_dataset_pickle/valid_dataset_df.pkl'
+    input_dir = config_1.input_dir 
+    input_vqa_train =config_1.input_vqa_train 
+    input_vqa_valid =config_1.input_vqa_valid
 
-    img_feat_train = config_1.img_feat_train#'train_dataset_pickle/train-image-feature.pickle'
-    img_feat_valid =config_1.img_feat_valid#'valid_dataset_pickle/valid-image-feature.pickle'
+    img_feat_train = config_1.img_feat_train
+    img_feat_valid =config_1.img_feat_valid
 
     saved_dir = config_1.saved_dir
   
     
     num_epochs = opt.NUM_EPOCHS
-    image_size = opt.IMG_INPUT_SIZE#224
+    image_size = opt.IMG_INPUT_SIZE
     num_workers = 0
     batch_size = opt.BATCH_SIZE
 
@@ -144,16 +135,12 @@ def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch
                 with torch.set_grad_enabled(phase == 'train'):
                     output= model(image, questions) 
                     
-                    # print('output',outputs)
+                  
                     _, preds = torch.max(output, 1)
-                    #print('preds',preds.shape)
+                    
                    
                     loss = criterion(output, labels)
-                    # ce_loss = criterion(output, labels)
-                    # pt = torch.exp(-ce_loss)
-                    # loss = (alpha * (1-pt)**gamma * ce_loss).mean()
-                    # print(loss)
-
+                   
                     # backward + optimize only if in training phase
                     if phase == 'train':
                         loss.backward()
@@ -178,22 +165,20 @@ def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch
             epoch_loss = running_loss/batch_step_size
             epoch_acc1 = top1_acc/batch_step_size
             epoch_acc5 = top5_acc/batch_step_size
-            #epoch_acc = accuracy/batch_step_size
+           
             epoch_blue = bleu/batch_step_size
             
             #save the loss and accuracy for train and valid
             if phase =='train':
-                # scheduler.step()
+              
                 list_train_loss_per_epoch.append(epoch_loss)
                 list_train_acc1_per_epoch.append(epoch_acc1)
-                # list_train_acc5_per_epoch.append(epoch_acc5)
-                # list_train_blue_per_epoch.append(epoch_blue)
+               
             else:
                 
                 list_valid_loss_per_epoch.append(epoch_loss)
                 list_valid_acc1_per_epoch.append(epoch_acc1)
-                # list_valid_acc5_per_epoch.append(epoch_acc5)
-                # list_valid_blue_per_epoch.append(epoch_blue)
+                
 
             print('{} Loss: {:.4f} Top 1 Acc: {:.4f} Top 5 Acc: {:.4f} Bleu: {:.4f}'.format(
                 phase, epoch_loss, epoch_acc1,epoch_acc5, epoch_blue))
@@ -206,22 +191,11 @@ def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch
                 best_epoch = epoch
                 best_model_wts = copy.deepcopy(model.state_dict())
 
-                # load best model weights
-                # model.load_state_dict(best_model_wts)
-                # model.load_state_dict(best_model_wts)
-                # state = {'epoch': best_epoch, 
-                #         'state_dict': model.state_dict(), 
-                #         'optimizer': optimizer.state_dict(), 
-                #             'loss':epoch_loss,'valid_accuracy': best_acc1}
-                # saved_dir =config.saved_dir#'/home/smfogo/Med_Visual_question_answering/Exp1_4/' #'/content/gdrive/My Drive/vqa/'  #'.'    
-                # full_model_path =saved_dir+'model_state.tar'
-                # #full_model_path = saved_dir+'model_state.tar'
-                # torch.save(state, full_model_path)
+               
 
     history_loss = {'train':list_train_loss_per_epoch, 'valid':list_valid_loss_per_epoch}
     history_acc1 = {'train':list_train_acc1_per_epoch, 'valid':list_valid_acc1_per_epoch}
-    # history_acc5 = {'train':list_train_acc5_per_epoch, 'valid':list_valid_acc5_per_epoch}
-    # history_blue = {'train':list_train_blue_per_epoch, 'valid':list_valid_blue_per_epoch}
+  
     time_elapsed = time.time() - since
     print('Training complete in {:.0f}m {:.0f}s'.format(
         time_elapsed // 60, time_elapsed % 60))
@@ -230,8 +204,7 @@ def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch
     #plot the loss and accuracy for train and valid
     make_plot(history_loss, num_epochs, type_plot='loss')
     make_plot(history_acc1, num_epochs, type_plot='acc1')
-    # make_plot(history_acc5, num_epochs, type_plot='acc5')
-    # make_plot(history_blue, num_epochs, type_plot='blue')
+   
 
     # load best model weights
     model.load_state_dict(best_model_wts)
@@ -240,27 +213,22 @@ def train_model(): #  model, criterion, optimizer, scheduler, data_loader, batch
             'state_dict': model.state_dict(), 
             'optimizer': optimizer.state_dict(), 
                 'loss':epoch_loss,'valid_accuracy': best_acc1}
-    # saved_dir =path_output_change #'/content/gdrive/My Drive/vqa/'  #'.'    
+    
     full_model_path =saved_dir+'model_state_seed_97.tar'
-    #full_model_path = saved_dir+'model_state.tar'
+   
     torch.save(state, full_model_path)
     return model
 
 
 def accuracy(output, target, topk=(1,)):
     """Computes the precision@k for the specified values of k"""
-    # with open('/home/smfogo/Med_Visual_question_answering/Exp1_7/answer_classes.json', 'r') as j:
-    #     answer_classes_dict = json.load(j)
-    # print('up to here')
+   
     maxk = max(topk)
     batch_size = target.size(0)
 
     _, pred = output.topk(maxk, 1, True, True)
     pred = pred.t()
-    # for i in range(len(pred)):
-    #     for j in range(len(pred[i])):
-    #         if  pred[i][j]== answer_classes_dict['UNKNOWN']:
-    #             pred[i][j] = answer_classes_dict['UNKNOWN']+1
+   
 
     
     if target.dim() == 2: # multians option
@@ -271,7 +239,7 @@ def accuracy(output, target, topk=(1,)):
     for k in topk:
         correct_k = correct[:k].reshape(-1).float().sum(0)
         res.append((correct_k / batch_size))
-    # print(res)
+   
     return res
         
  
@@ -283,12 +251,11 @@ def get_bleu_score(predicted, true_ans_text):
     assert (len(predicted) == len(true_ans_text))
     ans_keys = list(answer_classes_dict.keys())
     ans_values = list(answer_classes_dict.values())
-    #print(ans_keys, ans_values)
+    
 
     for pred, true_ans in zip(predicted, true_ans_text):
         index_ans = ans_values.index(pred)
-        #print(ans_keys[index_ans])
-        #print(true_ans)
+        
         score += sentence_bleu([true_ans.split(' ')], ans_keys[index_ans].split(' '), smoothing_function=bleu_score.SmoothingFunction().method2)
 
     return score/len(true_ans_text)
@@ -358,62 +325,7 @@ def make_plot(history, epoch_max, type_plot='loss'):
     plt.show()
 
 
-# warmup lr schedule
-class GradualWarmupScheduler(_LRScheduler):
-    """ Gradually warm-up(increasing) learning rate in optimizer.
-    Proposed in 'Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour'.
-    Args:
-        optimizer (Optimizer): Wrapped optimizer.
-        multiplier: target learning rate = base lr * multiplier
-        total_epoch: target learning rate is reached at total_epoch, gradually
-        after_scheduler: after target_epoch, use this scheduler(eg. ReduceLROnPlateau)
-    """
 
-    def __init__(self, optimizer, multiplier, total_epoch, after_scheduler=None):
-        self.multiplier = multiplier
-        if self.multiplier <= 1.:
-            raise ValueError('multiplier should be greater than 1.')
-        self.total_epoch = total_epoch
-        self.after_scheduler = after_scheduler
-        self.finished = False
-        super().__init__(optimizer)
-
-    def get_lr(self):
-        if self.last_epoch > self.total_epoch:
-            if self.after_scheduler:
-                if not self.finished:
-                    self.after_scheduler.base_lrs = [base_lr * self.multiplier for base_lr in self.base_lrs]
-                    self.finished = True
-                return self.after_scheduler.get_lr()
-            return [base_lr * self.multiplier for base_lr in self.base_lrs]
-
-        return [base_lr * ((self.multiplier - 1.) * self.last_epoch / self.total_epoch + 1.) for base_lr in self.base_lrs]
-
-    def step_ReduceLROnPlateau(self, metrics, epoch=None):
-        if epoch is None:
-            epoch = self.last_epoch + 1
-        self.last_epoch = epoch if epoch != 0 else 1  # ReduceLROnPlateau is called at the end of epoch, whereas others are called at beginning
-        if self.last_epoch <= self.total_epoch:
-            warmup_lr = [base_lr * ((self.multiplier - 1.) * self.last_epoch / self.total_epoch + 1.) for base_lr in self.base_lrs]
-            for param_group, lr in zip(self.optimizer.param_groups, warmup_lr):
-                param_group['lr'] = lr
-        else:
-            if epoch is None:
-                self.after_scheduler.step(metrics, None)
-            else:
-                self.after_scheduler.step(metrics, epoch - self.total_epoch)
-
-    def step(self, epoch=None, metrics=None):
-        if type(self.after_scheduler) != ReduceLROnPlateau:
-            if self.finished and self.after_scheduler:
-                if epoch is None:
-                    self.after_scheduler.step(None)
-                else:
-                    self.after_scheduler.step(epoch - self.total_epoch)
-            else:
-                return super(GradualWarmupScheduler, self).step(epoch)
-        else:
-            self.step_ReduceLROnPlateau(metrics, epoch)
 
 
 def main():

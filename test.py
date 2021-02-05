@@ -22,9 +22,9 @@ def inference(model, test_loader, answer_classes_dict, path_change):
     print('Inferencing ...')
     # Iterate over data.
     for batch_idx, batch_sample in enumerate(test_loader):
-        image = batch_sample['image_feature'].to(device) #batch_sample['image'].to(device)
-        image_id = batch_sample['image_id']#.to(device)
-        questions = batch_sample['question']#.to(device)
+        image = batch_sample['image_feature'].to(device) 
+        image_id = batch_sample['image_id']
+        questions = batch_sample['question']
 
         output = model(image, questions)
         preds = torch.argmax(output, dim=-1)
@@ -54,12 +54,12 @@ def inference(model, test_loader, answer_classes_dict, path_change):
 def main():
 
    
-    path_output_change =config_1.path_output_change#'/home/smfogo/Med_Visual_question_answering/Exp1_4'#'/content/Med_Visual_question_answering/Exp1_4'  #'.'
-    path_change = config_1.path_change#'/home/smfogo' #'/content' #'.' 
+    path_output_change =config_1.path_output_change
+    path_change = config_1.path_change
 
-    input_dir = config_1.input_dir#'/home/smfogo/Med_Visual_question_answering/Exp1_4'#'/content/Med_Visual_question_answering/Exp1_3'#'./'
-    input_test = config_1.input_test#'test_dataset_pickle/C1_test_dataset_df.pkl'
-    img_feat_test = config_1.img_feat_test#'test_dataset_pickle/test-image-feature.pickle'#.csv.gz'
+    input_dir = config_1.input_dir
+    input_test = config_1.input_test
+    img_feat_test = config_1.img_feat_test
 
     with open(path_output_change+'/answer_classes.json', 'r') as j:
         answer_classes = json.load(j)
@@ -81,13 +81,13 @@ def main():
         size = image_size )
 
     model = VqaClassifierModel( opt=opt ).to(device)
-    saved_dir = config_1.saved_dir#'/home/smfogo/Med_Visual_question_answering/Exp1_4/'#'/content/gdrive/My Drive/vqa/'
+    saved_dir = config_1.saved_dir
     filename =saved_dir+'model_state_seed_97.tar'
     print("=> loading checkpoint '{}'".format(filename)) 
     checkpoint = torch.load(filename) 
     start_epoch = checkpoint['epoch'] 
     model.load_state_dict(checkpoint['state_dict']) 
-    #optimizer.load_state_dict(checkpoint['optimizer']) 
+  
     print("=> loaded checkpoint '{}' (epoch {})" .format(filename, checkpoint['epoch']))
     inference(model=model, test_loader=test_data_loader, answer_classes_dict=answer_classes , path_change= path_change)
     
