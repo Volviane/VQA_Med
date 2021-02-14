@@ -11,6 +11,9 @@ import ast
 
 
 class VqaDataset(data.Dataset):
+    '''
+        Main class use to retrieve our dataset from pickle file.
+    '''
 
     def __init__(self, input_dir, input_vqa, img_feat_vqa, transform=None, phase = 'train'):
         self.input_dir = input_dir
@@ -51,8 +54,9 @@ class VqaDataset(data.Dataset):
 
 
 def get_loader(input_dir, input_vqa_train, input_vqa_valid, img_feat_train, img_feat_valid, batch_size, num_workers,size=228):
-
-     
+    '''
+        Load our dataset with dataloader for the train and valid data
+    '''
 
     vqa_dataset = {
         'train': VqaDataset(

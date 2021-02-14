@@ -79,13 +79,14 @@ class VGG19(nn.Module):
 
 
 def parse_sentence(s):
+    '''remove some character on the question'''
     s = s.replace(" - ", "-")
     s = s.lower()
     s = re.sub("\s\s+", " ", s)
     return s
 
 
-#read a txt file for each category and structure it in a dataframe
+#read a txt train file  and structure it in a dataframe
 def get_category_file_train(category_name, category_path ,images_path, vgg19_model, transform=None):
     
     data = []
@@ -129,7 +130,7 @@ def get_category_file_train(category_name, category_path ,images_path, vgg19_mod
     
     return df_data, classes,image_feat
 
- #read a txt file for each category and structure it in a dataframe
+ #read a txt validation file and structure it in a dataframe
 def get_category_file_valid(category_name, category_path ,images_path, classes, vgg19_model, transform=None):
     
     data = []
@@ -163,7 +164,7 @@ def get_category_file_valid(category_name, category_path ,images_path, classes, 
     
     return df_data ,image_feat
 
-
+#read a txt test file and structure it in a dataframe
 def get_test_file(category_name, category_path ,images_path,vgg16_model, transform=None,group='test'):
     
     data = []
@@ -193,6 +194,8 @@ def get_test_file(category_name, category_path ,images_path,vgg16_model, transfo
                                                  'Group', 
                                                  ])
     return df_data,image_feat
+
+
 
 def count_answer_freq(df_data):
     '''
@@ -295,7 +298,7 @@ def main():
     torch.backends.cudnn.deterministic = True
  
     
-
+    #set path for the dataset
     train_path = path_change+'/VQA_Med_2019_Dataset/Train/ImageClef-2019-VQA-Med-Training/'#QAPairsByCategory/'
     train_images_path = path_change+'/VQA_Med_2019_Dataset/Train/ImageClef-2019-VQA-Med-Training/Train_images/'
 
@@ -304,31 +307,35 @@ def main():
 
     test_path = path_change+'/VQA_Med_2019_Dataset/Test/VQAMed2019Test/' 
     test_images_path = path_change+'/VQA_Med_2019_Dataset/Test/VQAMed2019Test/VQAMed2019_Test_Images/'
-    size = opt.IMG_INPUT_SIZE#228
+    size = opt.IMG_INPUT_SIZE
+
+    #transformation we apply to each image
     transform = {
-        phase: transforms.Compose([transforms.RandomResizedCrop(size), #transforms.CenterCrop(size),
-                                    #transforms.ColorJitter(),
+        phase: transforms.Compose([transforms.RandomResizedCrop(size), 
+                                    
                                     transforms.ToTensor(),
                                    transforms.Normalize((0.485, 0.456, 0.406),
                                                         (0.229, 0.224, 0.225))]) 
     
         for phase in ['train', 'valid']}
     
-    test_transform = transforms.Compose([transforms.RandomResizedCrop(size), #transforms.CenterCrop(size),
+    test_transform = transforms.Compose([transforms.RandomResizedCrop(size),
                                     transforms.ToTensor(),
                                    transforms.Normalize((0.485, 0.456, 0.406),
                                                         (0.229, 0.224, 0.225))])
     
+
+    #image extractor
     vgg19_model = VGG19().to(device)
 
-    train_dataset_df, classes, image_feat_train = get_category_file_train(category_name=category_names['All'],#C1 
-                                                        category_path=train_path+'All_QA_Pairs_train.txt', #'All_QA_Pairs_train.txt',#'C1_Modality_train.txt', # 'C2_Plane_train.txt', # 'C3_Organ_train.txt',# 'C4_Abnormality_train.txt',
+    train_dataset_df, classes, image_feat_train = get_category_file_train(category_name=category_names['All'],
+                                                        category_path=train_path+'All_QA_Pairs_train.txt', 
                                                         images_path=train_images_path,
                                                         vgg16_model=vgg19_model,
                                                         transform=transform['train'])
 
-    valid_dataset_df, image_feat_valid = get_category_file_valid(category_name=category_names['All'],#C1
-                                                    category_path=valid_path+ 'All_QA_Pairs_val.txt', #'C3_Organ_val.txt',#'All_QA_Pairs_val.txt',#'C1_Modality_val.txt', # 'C2_Plane_val.txt', # 'C3_Organ_val.txt',# 'C4_Abnormality_val.txt',
+    valid_dataset_df, image_feat_valid = get_category_file_valid(category_name=category_names['All'],
+                                                    category_path=valid_path+ 'All_QA_Pairs_val.txt',
                                                     images_path=valid_images_path,
                                                     classes= classes,
                                                     vgg16_model=vgg19_model,
@@ -340,7 +347,7 @@ def main():
                                                   vgg16_model=vgg19_model,
                                                   transform=test_transform,
                                                   group='test')
-    C1_test_dataset_df= test_dataset_df[:] #[:125] [125:250] [250:375] [375:]
+    C1_test_dataset_df= test_dataset_df
     
   
     answer_freq = count_answer_freq(train_dataset_df)

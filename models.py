@@ -28,17 +28,6 @@ class BERTokenizer():
         self.opt = opt
     #pre-process the text data
     def text_preprocessing(self, text):
-        """
-            - Remove entity mentions (eg. '@united')
-            - Correct errors (eg. '&amp;' to '&')
-            @param    text (str): a string to be processed.
-            @return   text (Str): the processed string.
-        """
-        # Remove '@name'
-        # text = re.sub(r'(@.*?)[\s]', ' ', text)
-
-        # Replace '&amp;' with '&'
-        # text = re.sub(r'&amp;', '&', text)
 
         # Remove trailing whitespace
         text = re.sub(r'\s+', ' ', text).strip()
@@ -61,26 +50,6 @@ class BERTokenizer():
         # For every sentence...
         for sent in data:
             
-            # # Add the special tokens.
-            # marked_text = "[CLS] " + sent + " [SEP]"
-
-            # # Split the sentence into tokens.
-            # tokenized_text = self.tokenizer.tokenize(marked_text)
-
-            # # Map the token strings to their vocabulary indeces.
-            # indexed_tokens = tokenizer.convert_tokens_to_ids(tokenized_text)
-
-            # # Mark each of the 22 tokens as belonging to sentence "1".
-            # segments_ids = [1] * MAX_LEN
-
-            
-            # `encode_plus` will:
-            #    (1) Tokenize the sentence
-            #    (2) Add the `[CLS]` and `[SEP]` token to the start and end
-            #    (3) Truncate/Pad sentence to max length
-            #    (4) Map tokens to their IDs
-            #    (5) Create attention mask
-            #    (6) Return a dictionary of outputs
             encoded_sent = self.tokenizer.encode_plus(
                 text=self.text_preprocessing(sent),  # Preprocess sentence
                 add_special_tokens=True,        # Add `[CLS]` and `[SEP]`
@@ -110,6 +79,7 @@ class BertQstEncoder(nn.Module):
         @param    bert: a BertModel object
         @param    classifier: a torch.nn.Module classifier
         @param    freeze_bert (bool): Set `False` to fine-tune the BERT model
+        @param    opt: for configuration parameter
         """
         super(BertQstEncoder, self).__init__()
         self.opt = opt
@@ -133,10 +103,6 @@ class BertQstEncoder(nn.Module):
         self.bert_encode_layer11 = (self.bert.encoder.layer)[10]
         self.bert_encode_layer12 = (self.bert.encoder.layer)[11]
 
-        # # Freeze the BERT model
-        # if freeze_bert:
-        #     for param in self.bert.parameters():
-        #         param.requires_grad = False
         
     def forward(self, input_ids, attention_mask):
         """
@@ -152,52 +118,23 @@ class BertQstEncoder(nn.Module):
 
         # Feed input to BERT
 
-        # Feed input to BERT
-        # print('heuiiii')
         with torch.no_grad():
             emb_out = self.bert_emb(input_ids, attention_mask)
-            # print('------------my emb output------------', emb_out.shape)
             layer1= self.bert_encode_layer1(emb_out)
-            # print('-------------layer1 output', layer1[0].shape)
             layer2= self.bert_encode_layer2(layer1[0])
-            # print('-------------layer2 output', layer2[0].shape)
             layer3= self.bert_encode_layer3(layer2[0])
-            # print('-------------layer3 output', layer3[0].shape)
             layer4= self.bert_encode_layer4(layer3[0])
-            # print('-------------layer4 output', layer4[0].shape)
             layer5= self.bert_encode_layer5(layer4[0])
-            # print('-------------layer5 output', layer5[0].shape)
             layer6= self.bert_encode_layer6(layer5[0])
-            # print('-------------layer6 output', layer6[0].shape)
             layer7= self.bert_encode_layer7(layer6[0])
-            # print('-------------layer7 output', layer7[0].shape)
             layer8= self.bert_encode_layer8(layer7[0])
-            # print('-------------layer8 output', layer8[0].shape)
             layer9= self.bert_encode_layer9(layer8[0])
-            # print('-------------layer9 output', layer9[0].shape)
             layer10= self.bert_encode_layer10(layer9[0])
-            # print('-------------layer10 output', layer10[0].shape)
             layer11= self.bert_encode_layer11(layer10[0])
-            # print('-------------layer11 output', layer11[0].shape)
             layer12= self.bert_encode_layer12(layer11[0])
-        # print('-------------layer12 output', layer12[0].shape)
 
         word_question_representation = (layer11[0] +layer12[0])/2
-        # print('===avg layer', avg_layer.shape)
-        
-        # Predict hidden states features for each layer
-        # with torch.no_grad():
-        #     outputs, _ = self.bert(input_ids, attention_mask)
-        # print()
-
-        # with torch.no_grad():
-        #     outputs = self.bert(input_ids=input_ids,
-        #                         attention_mask=attention_mask)
-        
-        # Extract the last hidden state of the question word representation
-        # word_question_representation = avg_layer #outputs[0]#outputs[0] #(outputs[0][:, 0, :] + outputs[0][:, 1, :])/2
-
-        
+               
         return word_question_representation
 
 
@@ -217,40 +154,30 @@ class QuestionFeatureExtractionAtt(nn.Module):
         self.Linear2_q_proj = nn.Linear(self.opt.BERT_UNIT_NUM*self.opt.NUM_QUESTION_GLIMPSE, self.JOINT_EMB_SIZE)
         
         self.Dropout_M = nn.Dropout(p=self.opt.MFB_DROPOUT_RATIO)
-        self.dropout = nn.Dropout(self.opt.BERT_DROPOUT_RATIO) #0.3
-        self.Conv1_Qatt = nn.Conv2d(self.opt.BERT_UNIT_NUM, self.opt.IMAGE_CHANNEL, 1) #(768, 512, 1) 
-        self.Conv2_Qatt = nn.Conv2d(self.opt.IMAGE_CHANNEL, self.opt.NUM_QUESTION_GLIMPSE, 1) #512
+        self.dropout = nn.Dropout(self.opt.BERT_DROPOUT_RATIO) 
+        self.Conv1_Qatt = nn.Conv2d(self.opt.BERT_UNIT_NUM, self.opt.IMAGE_CHANNEL, 1) 
+        self.Conv2_Qatt = nn.Conv2d(self.opt.IMAGE_CHANNEL, self.opt.NUM_QUESTION_GLIMPSE, 1)
 
     def forward(self,qst_encoding):
-        # print('here')
+       
 
         '''
         Question Attention
         '''   
         self.batch_size = qst_encoding.shape[0]
         qst_encoding = self.dropout(qst_encoding)
-        qst_encoding_resh =  torch.unsqueeze(qst_encoding, 3)       # N=4 x 768 x T=14 x 1
-        # print('before conv 1',qst_encoding_resh.shape)     
+        qst_encoding_resh =  torch.unsqueeze(qst_encoding, 3)       # N=4 x 768 x T=14 x 1     
         qatt_conv1 = self.Conv1_Qatt(qst_encoding_resh)                   # N x 512 x T x 1
-        # print('after conv 1',qatt_conv1.shape)
         qatt_relu = F.relu(qatt_conv1)
-        # print('after relu',qatt_relu.shape )
         qatt_conv2 = self.Conv2_Qatt(qatt_relu)                          # N x 2 x T x 1
-        # print('after conv 2',qatt_conv2.shape )
         qatt_conv2 = qatt_conv2.contiguous().view(self.batch_size*2,-1)
-        # print('after reshape',qatt_conv2.shape)
         qatt_softmax = self.Softmax(qatt_conv2)
-        # print('after softmax',qatt_softmax.shape )
         qatt_softmax = qatt_softmax.view(self.batch_size, 2, -1, 1)
-        # print('after the second reshape',qatt_softmax.shape)
         qatt_feature_list = []
         for i in range(self.NUM_QUESTION_GLIMPSE):
             t_qatt_mask = qatt_softmax.narrow(1, i, 1)              # N x 1 x T x 1
-            # print('after narrow', t_qatt_mask.shape)
             t_qatt_mask = t_qatt_mask * qst_encoding_resh           # N x 768 x T x 1
-            # print('after element wise mult', t_qatt_mask.shape)
             t_qatt_mask = torch.sum(t_qatt_mask, 2, keepdim=True)   # N x 768 x 1 x 1
-            # print('after sum ', t_qatt_mask.shape)
             qatt_feature_list.append(t_qatt_mask)
         qatt_feature_concat = torch.cat(qatt_feature_list, 1)       # N x 1536 x 1 x 1
 
@@ -287,7 +214,6 @@ class ImageFeatureExtractionAtt(nn.Module):
         '''
         self.batch_size = img_feature.shape[0]
         q_feat_resh = torch.squeeze(qstatt_feature)                              # N x 1536
-        # print('qst feature that we pass through the img MFB', q_feat_resh.shape)
         i_feat_resh = img_feature.unsqueeze(3)                                   # N x 512 x 196 x 1
         iatt_q_proj = self.Linear1_q_proj(q_feat_resh)                                  # N x 5000
         iatt_q_resh = iatt_q_proj.view(self.batch_size, self.JOINT_EMB_SIZE, 1, 1)      # N x 5000 x 1 x 1
@@ -295,17 +221,14 @@ class ImageFeatureExtractionAtt(nn.Module):
         iatt_iq_eltwise = iatt_q_resh * iatt_i_conv
         iatt_iq_droped = self.Dropout_M(iatt_iq_eltwise)                                # N x 5000 x 196 x 1
         iatt_iq_permute1 = iatt_iq_droped.permute(0,2,1,3).contiguous()                 # N x 196 x 5000 x 1
-        # print(MFB_OUT_DIM)
         iatt_iq_resh = iatt_iq_permute1.view(self.batch_size, self.IMG_FEAT_SIZE, self.MFB_OUT_DIM, self.MFB_FACTOR_NUM)
         iatt_iq_sumpool = torch.sum(iatt_iq_resh, 3, keepdim=True)                      # N x 196 x 1000 x 1 
         iatt_iq_permute2 = iatt_iq_sumpool.permute(0,2,1,3)                             # N x 1000 x 196 x 1
         iatt_iq_sqrt = torch.sqrt(F.relu(iatt_iq_permute2)) - torch.sqrt(F.relu(-iatt_iq_permute2))
-        # print('iatt_iq_sqrt', iatt_iq_sqrt.shape)
         iatt_iq_sqrt = iatt_iq_sqrt.reshape(self.batch_size, -1)                           # N x 196000
         iatt_iq_l2 = F.normalize(iatt_iq_sqrt)
         iatt_iq_l2 = iatt_iq_l2.view(self.batch_size, self.MFB_OUT_DIM, self.IMG_FEAT_SIZE, 1)  # N x 1000 x 196 x 1
 
-        ## 2 conv layers 1000 -> 512 -> 2
         iatt_conv1 = self.Conv1_Iatt(iatt_iq_l2)                    # N x 512 x 196 x 1
         iatt_relu = F.relu(iatt_conv1)
         iatt_conv2 = self.Conv2_Iatt(iatt_relu)                     # N x 2 x 196 x 1
@@ -334,14 +257,13 @@ class VqaClassifierModel(nn.Module):
         
         self.MFB_OUT_DIM = self.opt.MFB_OUT_DIM
         self.MFB_FACTOR_NUM = self.opt.MFB_FACTOR_NUM
-        NUM_OUTPUT_UNITS = self.opt.NUM_OUTPUT_UNITS#len(answer_classes)
+        NUM_OUTPUT_UNITS = self.opt.NUM_OUTPUT_UNITS
 
 
         self.tokenizer = BERTokenizer(self.opt)
         self.bert_model = BertQstEncoder(self.opt)
 
-        # self.vgg16_model = VGG16()
-
+       
         self.qst_feature_att = QuestionFeatureExtractionAtt(self.opt)
         self.img_feature_att = ImageFeatureExtractionAtt(self.opt)
 
@@ -356,14 +278,12 @@ class VqaClassifierModel(nn.Module):
     def forward(self, img, qst):
 
         self.batch_size = img.shape[0]
-        #image_feature = self.vgg16_model(img)
         image_feature = img
         input_ids, attention_mask = self.tokenizer.preprocessing_for_bert(qst)
         question_feature = self.bert_model(input_ids.to(device), attention_mask.to(device))
         question_feature = question_feature.transpose(1, 2)      # N=4 x 768 x T=14
 
         q_featatt = self.qst_feature_att(question_feature)      # N x 1536
-        # print('q_featatt.shape',q_featatt.shape)
         
         iatt_feature_concat = self.img_feature_att(image_feature,q_featatt)          # N x 1024
 

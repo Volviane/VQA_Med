@@ -67,9 +67,9 @@ def main():
     opt = config_1.parse_opt()
         
     
-    batch_size = opt.BATCH_SIZE#32 #16
+    batch_size = opt.BATCH_SIZE
     num_workers = 0
-    image_size = opt.IMG_INPUT_SIZE#228
+    image_size = opt.IMG_INPUT_SIZE
     
     # Create the DataLoader for our dataset
     test_data_loader = get_test_loader(

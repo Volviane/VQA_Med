@@ -329,17 +329,9 @@ def make_plot(history, epoch_max, type_plot='loss'):
 
 
 def main():
-
-
     train_model()
 
     
-
-
-
-
-
-           
 
 if __name__ == '__main__':
     main()
