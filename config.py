@@ -33,7 +33,7 @@ def parse_opt():
     parser.add_argument('--VAL_BATCH_SIZE', type=int, default=64) 
     parser.add_argument('--NUM_OUTPUT_UNITS', type=int, default=len(answer_classes))
     parser.add_argument('--MAX_QUESTION_LEN', type=int, default=17)
-    parser.add_argument('--IMAGE_CHANNEL', type=int, default=1984)
+    parser.add_argument('--IMAGE_CHANNEL', type=int, default=1472)
     parser.add_argument('--INIT_LERARNING_RATE', type=float, default=1e-4) 
     parser.add_argument('--LAMNDA', type=float, default=0.0001) 
     parser.add_argument('--MFB_FACTOR_NUM', type=int, default=5)
