@@ -44,3 +44,11 @@ see details on trainig parameter [here](https://github.com/Volviane/VQA_Med/blob
 
 5. run `$ python dataset_helper.py` to generate the features of your dataset (this can take few minutes)
 6. Finally run `$ python train.py` to train your model 
+
+
+## Citation
+If you find this implementation helpful, please consider citing:
+
+```
+citation
+```
