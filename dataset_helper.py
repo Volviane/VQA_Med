@@ -63,7 +63,7 @@ class VGG19(nn.Module):
         out7 = out7.mean([2,3],keepdim=True)
 
        
-        concat_features = torch.cat([out1, out2, out3, out4,out5,out5 ], 1) 
+        concat_features = torch.cat([out1, out2, out3, out4,out5], 1) 
 
         #l2-normalized feature vector
         l2_norm = concat_features.norm(p=2, dim=1, keepdim=True).detach() 

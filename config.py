@@ -45,6 +45,6 @@ def parse_opt():
     parser.add_argument('--NUM_QUESTION_GLIMPSE', type=int, default=2)
     parser.add_argument('--IMG_FEAT_SIZE', type=int, default=1) 
     parser.add_argument('--IMG_INPUT_SIZE', type=int, default=224) 
-    parser.add_argument('--NUM_EPOCHS', type=int, default=200) 
+    parser.add_argument('--NUM_EPOCHS', type=int, default=300) 
     args = parser.parse_args()
     return args
