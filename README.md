@@ -28,7 +28,7 @@ see details on trainig parameter [here](https://github.com/Volviane/VQA_Med/blob
 ## Training procedure
 
 
-1. Download and unzip the dataset at  https://github.com/abachaa/VQA-Med-2019 ;
+1. Download and unzip the dataset at  [here](https://github.com/abachaa/VQA-Med-2019) ;
 2. Clone this repo using git clone  
 `$ git clone https://github.com/Volviane/VQA_Med.git`
 

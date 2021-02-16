@@ -165,7 +165,7 @@ def get_category_file_valid(category_name, category_path ,images_path, classes, 
     return df_data ,image_feat
 
 #read a txt test file and structure it in a dataframe
-def get_test_file(category_name, category_path ,images_path,vgg16_model, transform=None,group='test'):
+def get_test_file(category_name, category_path ,images_path,vgg19_model, transform=None,group='test'):
     
     data = []
     
@@ -186,7 +186,7 @@ def get_test_file(category_name, category_path ,images_path,vgg16_model, transfo
         image = Image.open(images_path+pd_element[0]+'.jpg').convert('RGB')
         if transform:
             image = transform(image)
-        image_feature = vgg16_model(image[None,...].to(device))
+        image_feature = vgg19_model(image[None,...].to(device))
         image_feat[pd_element[0]] = image_feature.cpu().numpy()
         
     df_data = pd.DataFrame(dict_data, columns = ['Image_id',
@@ -329,20 +329,20 @@ def main():
     train_dataset_df, classes, image_feat_train = get_category_file_train(category_name=category_names['All'],
                                                         category_path=train_path+'All_QA_Pairs_train.txt', 
                                                         images_path=train_images_path,
-                                                        vgg16_model=vgg19_model,
+                                                        vgg19_model=vgg19_model,
                                                         transform=transform['train'])
 
     valid_dataset_df, image_feat_valid = get_category_file_valid(category_name=category_names['All'],
                                                     category_path=valid_path+ 'All_QA_Pairs_val.txt',
                                                     images_path=valid_images_path,
                                                     classes= classes,
-                                                    vgg16_model=vgg19_model,
+                                                    vgg19_model=vgg19_model,
                                                     transform=transform['valid'])
 
     test_dataset_df, image_feat_test = get_test_file(category_name=category_names['All'], 
                                                   category_path=test_path+'VQAMed2019_Test_Questions.txt'  ,
                                                   images_path=test_images_path,
-                                                  vgg16_model=vgg19_model,
+                                                  vgg19_model=vgg19_model,
                                                   transform=test_transform,
                                                   group='test')
     C1_test_dataset_df= test_dataset_df
