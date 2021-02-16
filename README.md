@@ -18,24 +18,29 @@ Python 3.8.5, pytorch 1.7.0, torchvision 0.8.1, you have to follow the procedure
 | [Team UMMS](https://www.semanticscholar.org/paper/Deep-Multimodal-Learning-for-Medical-Visual-Shi-Liu/1b0ae121c79437bb122d0cd20d744776445792a4) (fifth at VQA-Med 2019) 	| 0.672    	| 0.760  	| 0.736        	| 0.096       	| 0.566   	|
 | Our Model                         	| 0.862    	| 0.752  	| 0.687        	| 0.088       	| 0.597   	|
 
-see details on trainig parameter [here](###)
+see details on trainig parameter [here](https://github.com/Volviane/VQA_Med/blob/main/config.py)
 
-To reproduce our result:
+![Figure 2: our model loss plot ](https://github.com/Volviane/VQA_Med/blob/main/imgs/loss.png)
+
+![Figure 3: our model accuracy plot ](https://github.com/Volviane/VQA_Med/blob/main/imgs/acc1.png)
+
+
+## Training procedure
 
 
 1. Download and unzip the dataset at  https://github.com/abachaa/VQA-Med-2019 ;
-2. clone this repo using git clone  git clone https://github.com/Volviane/VQA_Med.git
-Please make sure that your unzip data is store in the same diretory as the  VQA_Med project you just clone
+2. Clone this repo using git clone  
+`$ git clone https://github.com/Volviane/VQA_Med.git`
 
-Make sure you modify config.py file to change the path, (e.g. in our case here, '/home/smfogo/' is the folder where we stored the data and the  VQA_Med  project )
+*Please make sure that your unzip data is store in the same diretory as the  VQA_Med project you just clone. Kindly make sure you modify config.py file to change the path, (e.g. in our case here, '/home/smfogo/' is the folder where we stored the data and the  VQA_Med  project )*
 
-3. go into the project directory using cd VQA_Med
-4. run the following command to install all the dependencies you need to run this project :
-    - *conda env create -f vqamed.yml*  if you're using conda 
+3. Go into the project directory using cd VQA_Med
+4. Run the following command to install all the dependencies you need to run this project :
+    - `$ conda env create -f vqamed.yml`  if you're using conda 
     or
-    - *pip install -r requirements.txt* if you're using pip
+    - `$ pip install -r requirements.txt` if you're using pip
 
-    then end run *conda activate vqamed* if you are unsing conda
+    then end run `$ conda activate vqamed` to activate the enviromnent, if you are unsing conda
 
-5. run *python dataset_helper.py* to generate the features of your dataset (this can take few minutes)
-6. Finally run python train.py to train your model 
+5. run `$ python dataset_helper.py` to generate the features of your dataset (this can take few minutes)
+6. Finally run `$ python train.py` to train your model 
