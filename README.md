@@ -6,6 +6,20 @@ This is our implementation of our model validated on [VQA-Med 2019](https://gith
 
  ![Figure 1: The MFB+CoAtt Network architecture for VQA Med.](https://github.com/Volviane/VQA_Med/blob/main/imgs/model_architecture.PNG)
 
+ We based our model on [Halim's model](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_85.pdf) and the authors helped us with the script to evaluate our model.
+## Requirements
+Python 3.8.5, pytorch 1.7.0, torchvision 0.8.1, you have to follow the procedure for the requiment on *training from scratch* part
+ 
+  
+## Result
+| Models                            	| Modality 	| Plane  	| Organ system 	| Abnormality 	| Overall 	|
+|-----------------------------------	|----------	|--------	|--------------	|-------------	|---------	|
+| [Team Halim](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_85.pdf) (State-of-the-art)     	| 0.808    	| 0.768  	| 0.736        	| 0.184       	| 0.624   	|
+| [Team UMMS](https://www.semanticscholar.org/paper/Deep-Multimodal-Learning-for-Medical-Visual-Shi-Liu/1b0ae121c79437bb122d0cd20d744776445792a4) (fifth at VQA-Med 2019) 	| 0.672    	| 0.760  	| 0.736        	| 0.096       	| 0.566   	|
+| Our Model                         	| 0.862    	| 0.752  	| 0.687        	| 0.088       	| 0.597   	|
+
+see details on trainig parameter [here](###)
+
 To reproduce our result:
 
 
