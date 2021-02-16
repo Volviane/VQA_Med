@@ -1,5 +1,10 @@
-# VQA_Med
-Visual Question Answering in the medical domain
+# Visual Question Answering in the medical domain
+
+This is our implementation of our model validated on [VQA-Med 2019](https://github.com/abachaa/VQA-Med-2019 )
+
+
+
+ ![Figure 1: The MFB+CoAtt Network architecture for VQA Med.](https://github.com/Volviane/VQA_Med/blob/main/imgs/model_architecture.PNG)
 
 To reproduce our result:
 
