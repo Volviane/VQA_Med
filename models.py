@@ -11,10 +11,10 @@ import torchvision
 from transformers import BertTokenizer
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 from transformers import BertModel
-import config_1
+import config
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-path_output_change =config_1.path_output_change
+path_output_change =config.path_output_chd
 
 with open(path_output_change+'/answer_classes.json', 'r') as j:
         answer_classes = json.load(j)
@@ -140,6 +140,10 @@ class BertQstEncoder(nn.Module):
 
 #Extract the question feature with co-attention
 class QuestionFeatureExtractionAtt(nn.Module):
+    '''
+        Extract the question with co-attention, get from https://github.com/asdf0982/vqa-mfb.pytorch 
+    '''
+
     def __init__(self,opt):
 
         super(QuestionFeatureExtractionAtt, self).__init__()
@@ -159,7 +163,6 @@ class QuestionFeatureExtractionAtt(nn.Module):
         self.Conv2_Qatt = nn.Conv2d(self.opt.IMAGE_CHANNEL, self.opt.NUM_QUESTION_GLIMPSE, 1)
 
     def forward(self,qst_encoding):
-       
 
         '''
         Question Attention
@@ -186,6 +189,11 @@ class QuestionFeatureExtractionAtt(nn.Module):
 
 #Extract the image feature with MFB and co-attention 
 class ImageFeatureExtractionAtt(nn.Module):
+
+    '''
+        Extract the image with co-attention, get from https://github.com/asdf0982/vqa-mfb.pytorch 
+    '''
+
     def __init__(self,opt):
         super(ImageFeatureExtractionAtt, self).__init__()
         self.opt = opt
@@ -248,6 +256,9 @@ class ImageFeatureExtractionAtt(nn.Module):
 
 
 class VqaClassifierModel(nn.Module):
+    '''
+        Fusion with MFB,  get from https://github.com/asdf0982/vqa-mfb.pytorch 
+    '''
 
     def __init__(self, opt):
         super(VqaClassifierModel, self).__init__()

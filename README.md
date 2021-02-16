@@ -8,7 +8,7 @@ To reproduce our result:
 2. clone this repo using git clone  git clone https://github.com/Volviane/VQA_Med.git
 Please make sure that your unzip data is store in the same diretory as the  VQA_Med project you just clone
 
-Make sure you modify conf_1.py file to change the path, (e.g. in our case here, '/home/smfogo/' is the folder where we stored the data and the  VQA_Med  project )
+Make sure you modify config.py file to change the path, (e.g. in our case here, '/home/smfogo/' is the folder where we stored the data and the  VQA_Med  project )
 
 3. go into the project directory using cd VQA_Med
 4. run the following command to install all the dependencies you need to run this project :

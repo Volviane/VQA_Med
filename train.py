@@ -22,7 +22,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from data_loader import get_loader
 
 from models import VqaClassifierModel
-import config_1
+import config
 
 import matplotlib.pyplot as plt
 import nltk
@@ -33,7 +33,7 @@ from ray.tune.schedulers import ASHAScheduler
 #from sklearn.preprocessing import LabelEncoder
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 nltk.download('punkt')
-opt = config_1.parse_opt()
+opt = config.parse_opt()
 
 seed_value = opt.SEED
 np.random.seed(seed_value)
@@ -50,7 +50,6 @@ torch.backends.cudnn.deterministic = True
 def train_model():
     since = time.time()
 
-    
     best_acc1 = 0.0
     best_acc5 = 0.0
     
@@ -62,21 +61,19 @@ def train_model():
     list_train_acc1_per_epoch = []
     list_valid_acc1_per_epoch = []
 
-   
-
     model = VqaClassifierModel( opt=opt ).to(device)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=opt.INIT_LERARNING_RATE, weight_decay=opt.LAMNDA) 
 
-    input_dir = config_1.input_dir 
-    input_vqa_train =config_1.input_vqa_train 
-    input_vqa_valid =config_1.input_vqa_valid
+    input_dir = config.path_output_chd 
+    input_vqa_train =config.input_vqa_train 
+    input_vqa_valid =config.input_vqa_valid
 
-    img_feat_train = config_1.img_feat_train
-    img_feat_valid =config_1.img_feat_valid
+    img_feat_train = config.img_feat_train
+    img_feat_valid =config.img_feat_valid
 
-    saved_dir = config_1.saved_dir
+    saved_dir = config.path_output_chd
   
     
     num_epochs = opt.NUM_EPOCHS
@@ -202,8 +199,8 @@ def train_model():
     print('Best val Top 1 Acc: {:4f}, Top 5 Acc: {:4f}'.format(best_acc1,best_acc5))
 
     #plot the loss and accuracy for train and valid
-    make_plot(history_loss, num_epochs, type_plot='loss')
-    make_plot(history_acc1, num_epochs, type_plot='acc1')
+    make_plot(history_loss, num_epochs, input_dir, type_plot='loss')
+    make_plot(history_acc1,input_dir, num_epochs, type_plot='acc1')
    
 
     # load best model weights
@@ -214,7 +211,7 @@ def train_model():
             'optimizer': optimizer.state_dict(), 
                 'loss':epoch_loss,'valid_accuracy': best_acc1}
     
-    full_model_path =saved_dir+'model_state_seed_97.tar'
+    full_model_path =saved_dir+'/model_state_seed_97.tar'
    
     torch.save(state, full_model_path)
     return model
@@ -244,7 +241,7 @@ def accuracy(output, target, topk=(1,)):
         
  
 def get_bleu_score(predicted, true_ans_text):
-    path_output_change = config_1.path_output_change
+    path_output_change = config.path_output_chd
     with open(path_output_change+'/answer_classes.json', 'r') as j:
         answer_classes_dict = json.load(j)
     score = 0.0
@@ -277,11 +274,12 @@ def load_checkpoint(model, optimizer, filename=None):
     
 
 
-def make_plot(history, epoch_max, type_plot='loss'):
+def make_plot(history, epoch_max, path_output_chd, type_plot='loss'):
     train = history['train']
     valid = history['valid']
     fig, ax = plt.subplots()
     epochs = range(epoch_max)
+    
     
     if type_plot=='loss':
         plt.plot(epochs, train, '-r', lw=2, label='Training loss')
@@ -290,7 +288,7 @@ def make_plot(history, epoch_max, type_plot='loss'):
         plt.title('Training and Validation loss')
         plt.xlabel('Epochs')
         plt.ylabel('Loss')
-        plt.savefig('loss.png')
+        plt.savefig(path_output_chd+'/imgs/loss.png')
         
     elif type_plot == 'acc1':
     
@@ -300,7 +298,7 @@ def make_plot(history, epoch_max, type_plot='loss'):
         plt.title('Training and Validation Top 1 Accuracy')
         plt.xlabel('Epochs')
         plt.ylabel('Top 1 Accuracy')
-        plt.savefig('acc1.png')
+        plt.savefig(path_output_chd+'/imgs/acc1.png')
 
     elif type_plot == 'acc5':
     
@@ -310,7 +308,7 @@ def make_plot(history, epoch_max, type_plot='loss'):
         plt.title('Training and Validation Top 5 Accuracy')
         plt.xlabel('Epochs')
         plt.ylabel('Top 5 Accuracy')
-        plt.savefig('acc5.png')
+        plt.savefig(path_output_chd+'/imgs/acc5.png')
     else:
         plt.plot(epochs, train, '-r', lw = 2, label='Training blue')
         plt.plot(epochs, valid, '-b', lw = 2, label='validation blue')
@@ -318,14 +316,11 @@ def make_plot(history, epoch_max, type_plot='loss'):
         plt.title('Training and Validation blue')
         plt.xlabel('Epochs')
         plt.ylabel('Blue')
-        plt.savefig('blue.png')
+        plt.savefig(path_output_chd+'/imgs/blue.png')
 
     
     
     plt.show()
-
-
-
 
 
 def main():

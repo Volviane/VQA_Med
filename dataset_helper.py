@@ -9,7 +9,7 @@ import pickle
 import os
 from tqdm import tqdm
 import json
-import config_1
+import config
 
 import torch.nn as nn
 import torch
@@ -239,13 +239,10 @@ def get_most_frequent_classes(answer_freq_dict, threshold=1):
     return final_classes
 
 
-        
-
-
-
+    
 #save preprocessed training data frame
 def save_preprocesse_data(dataset_df, pickle_name, image_feat, name= 'train'):
-    path_output_chd = config_1.path_output_chd
+    path_output_chd = config.path_output_chd
     if name == 'train':
         
         dataset_df.to_pickle(path_output_chd+'/train_dataset_pickle/'+pickle_name+'.pkl')
@@ -282,9 +279,9 @@ def main():
                     'C4': 'Abnormality',
                     'All': 'All dataset',}
     
-    opt = config_1.parse_opt()
-    path_output_change =config_1.path_output_change
-    path_change = config_1.path_change
+    opt = config.parse_opt()
+    path_output_change =config.path_output_chd
+    path_change = config.path
 
     #set the seed
     seed_value = opt.SEED
@@ -307,6 +304,7 @@ def main():
 
     test_path = path_change+'/VQA_Med_2019_Dataset/Test/VQAMed2019Test/' 
     test_images_path = path_change+'/VQA_Med_2019_Dataset/Test/VQAMed2019Test/VQAMed2019_Test_Images/'
+
     size = opt.IMG_INPUT_SIZE
 
     #transformation we apply to each image
@@ -352,10 +350,6 @@ def main():
   
     answer_freq = count_answer_freq(train_dataset_df)
  
-
-    
-
-    
     ####################################################SAVE AND LOAD DATA FRAME########################################################
     save_preprocesse_data(train_dataset_df, 'train_dataset_df', image_feat_train,'train')
     save_preprocesse_data(valid_dataset_df, 'valid_dataset_df', image_feat_valid,'valid')

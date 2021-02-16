@@ -10,7 +10,7 @@ import math
 import time
 import torch
 from data_loader import get_test_loader
-import config_1
+import config
 from models import VqaClassifierModel
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -48,23 +48,20 @@ def inference(model, test_loader, answer_classes_dict, path_change):
         time_elapsed // 60, time_elapsed % 60))
 
 
-
-
-
 def main():
 
    
-    path_output_change =config_1.path_output_change
-    path_change = config_1.path_change
+    path_output_change =config.path_output_chd
+    path_change = config.path
 
-    input_dir = config_1.input_dir
-    input_test = config_1.input_test
-    img_feat_test = config_1.img_feat_test
+    input_dir = config.path_output_chd
+    input_test = config.input_test
+    img_feat_test = config.img_feat_test
 
     with open(path_output_change+'/answer_classes.json', 'r') as j:
         answer_classes = json.load(j)
 
-    opt = config_1.parse_opt()
+    opt = config.parse_opt()
         
     
     batch_size = opt.BATCH_SIZE
@@ -81,8 +78,8 @@ def main():
         size = image_size )
 
     model = VqaClassifierModel( opt=opt ).to(device)
-    saved_dir = config_1.saved_dir
-    filename =saved_dir+'model_state_seed_97.tar'
+    saved_dir = config.path_output_chd
+    filename =saved_dir+'/model_state_seed_97.tar'
     print("=> loading checkpoint '{}'".format(filename)) 
     checkpoint = torch.load(filename) 
     start_epoch = checkpoint['epoch'] 
