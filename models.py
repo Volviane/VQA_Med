@@ -53,7 +53,7 @@ class BERTokenizer():
             encoded_sent = self.tokenizer.encode_plus(
                 text=self.text_preprocessing(sent),  # Preprocess sentence
                 add_special_tokens=True,        # Add `[CLS]` and `[SEP]`
-                max_length=MAX_LEN,                  # Max length to truncate/pad
+                padding=True,#max_length=MAX_LEN,                  # Max length to truncate/pad
                 pad_to_max_length=True,         # Pad sentence to max length
                 #return_tensors='pt',           # Return PyTorch tensor
                 truncation=True,
