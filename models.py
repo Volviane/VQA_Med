@@ -46,7 +46,7 @@ class BERTokenizer():
         # Create empty lists to store outputs
         input_ids = []
         attention_masks = []
-        MAX_LEN = self.opt.MAX_QUESTION_LEN#17 #load_data(self.tokenizer)
+        MAX_LEN = self.opt.MAX_QUESTION_LEN
         # For every sentence...
         for sent in data:
             
@@ -56,6 +56,7 @@ class BERTokenizer():
                 max_length=MAX_LEN,                  # Max length to truncate/pad
                 pad_to_max_length=True,         # Pad sentence to max length
                 #return_tensors='pt',           # Return PyTorch tensor
+                truncation=True
                 return_attention_mask=True      # Return attention mask
                 )
             
