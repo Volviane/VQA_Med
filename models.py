@@ -56,7 +56,7 @@ class BERTokenizer():
                 max_length=MAX_LEN,                  # Max length to truncate/pad
                 pad_to_max_length=True,         # Pad sentence to max length
                 #return_tensors='pt',           # Return PyTorch tensor
-                truncation=True
+                truncation=True,
                 return_attention_mask=True      # Return attention mask
                 )
             
