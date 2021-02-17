@@ -200,7 +200,7 @@ def train_model():
 
     #plot the loss and accuracy for train and valid
     make_plot(history_loss, num_epochs, input_dir, type_plot='loss')
-    make_plot(history_acc1,input_dir, num_epochs, type_plot='acc1')
+    make_plot(history_acc1, num_epochs,input_dir, type_plot='acc1')
    
 
     # load best model weights

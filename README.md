@@ -16,7 +16,7 @@ Python 3.8.5, pytorch 1.7.0, torchvision 0.8.1, you have to follow the procedure
 |-----------------------------------	|----------	|--------	|--------------	|-------------	|---------	|
 | [Team Halim](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_85.pdf) (State-of-the-art)     	| 0.808    	| 0.768  	| 0.736        	| 0.184       	| 0.624   	|
 | [Team UMMS](https://www.semanticscholar.org/paper/Deep-Multimodal-Learning-for-Medical-Visual-Shi-Liu/1b0ae121c79437bb122d0cd20d744776445792a4) (fifth at VQA-Med 2019) 	| 0.672    	| 0.760  	| 0.736        	| 0.096       	| 0.566   	|
-| Our Model                         	| **0.862**    	| 0.752 	| 0.687      	| 0.088       	| 0.597s   	|
+| Our Model                         	| **0.862**    	| 0.752 	| 0.687      	| 0.088       	| 0.597   	|
 
 see details on trainig parameter [here](https://github.com/Volviane/VQA_Med/blob/main/config.py)
 
