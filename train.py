@@ -22,7 +22,6 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from data_loader import get_loader
 from models import VqaClassifierModel
 import config_1
-from utils import *
 import matplotlib.pyplot as plt
 import nltk
 
