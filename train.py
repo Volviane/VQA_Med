@@ -237,7 +237,7 @@ def train_model(config): #  model, criterion, optimizer, scheduler, data_loader,
             'state_dict': model.state_dict(), 
             'optimizer': optimizer.state_dict(), 
                 'loss':epoch_loss,'valid_accuracy': best_acc1}
-    saved_dir ='/home/smfogo/Med_Visual_question_answering/Exp1_6/' #'/content/gdrive/My Drive/vqa/'  #'.'    
+    saved_dir ='/home/smfogo/VQA_Med/' #'/content/gdrive/My Drive/vqa/'  #'.'    
     full_model_path =saved_dir+'model_state_seed97primetest.tar'
     #full_model_path = saved_dir+'model_state.tar'
     torch.save(state, full_model_path)
@@ -274,7 +274,7 @@ def accuracy(output, target, topk=(1,)):
  
 def get_bleu_score(predicted, true_ans_text):
 
-    with open('/home/smfogo/Med_Visual_question_answering/Exp1_6/answer_classes.json', 'r') as j:
+    with open('/home/smfogo/VQA_Med/answer_classes.json', 'r') as j:
         answer_classes_dict = json.load(j)
     score = 0.0
     assert (len(predicted) == len(true_ans_text))

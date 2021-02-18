@@ -13,7 +13,7 @@ from torch.utils.data import TensorDataset, DataLoader, RandomSampler, Sequentia
 from transformers import BertModel
 import config_1
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-with open('/home/smfogo/Med_Visual_question_answering/Exp1_6/answer_classes.json', 'r') as j:
+with open('/home/smfogo/VQA_Med/answer_classes.json', 'r') as j:
         answer_classes = json.load(j)
 
 # def load_data(tokenizer):
