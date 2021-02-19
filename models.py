@@ -118,7 +118,7 @@ class BERTokenizer():
         # Create empty lists to store outputs
         input_ids = []
         attention_masks = []
-        MAX_LEN = self.opt.MAX_QUESTION_LEN#17 #load_data(self.tokenizer)
+        MAX_LEN = None#self.opt.MAX_QUESTION_LEN#17 #load_data(self.tokenizer)
         # For every sentence...
         for sent in data:
             
