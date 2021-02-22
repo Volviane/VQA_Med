@@ -24,7 +24,7 @@ img_feat_test = 'test_dataset_pickle/test-image-feature.pickle'
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    with open('/home/smfogo/VQA_Med/answer_classes.json', 'r') as j:
+    with open(path+'/VQA_Med/answer_classes.json', 'r') as j:
         answer_classes = json.load(j)
 
     # Data input settings

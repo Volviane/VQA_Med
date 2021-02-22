@@ -24,7 +24,7 @@ class BERTokenizer():
 
     def __init__(self,opt):
         # Load the BERT tokenizer
-        self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')# do_lower_case=True
+        self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
         self.opt = opt
     #pre-process the text data
     def text_preprocessing(self, text):
