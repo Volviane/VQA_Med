@@ -36,11 +36,11 @@ see details on trainig parameter [here](https://github.com/Volviane/VQA_Med/blob
 
 3. Go into the project directory using cd VQA_Med
 4. Run the following command to install all the dependencies you need to run this project :
-    - `$ conda env create -f vqamed.yml`  if you're using conda 
+    - `$ conda env create -f vqamedenv.yml`  if you're using conda 
     or
     - `$ pip install -r requirements.txt` if you're using pip
 
-    then end run `$ conda activate vqamed` to activate the enviromnent, if you are unsing conda
+    then end run `$ conda activate vqamedenv` to activate the enviromnent, if you are unsing conda
 
 5. run `$ python dataset_helper.py` to generate the features of your dataset (this can take few minutes)
 6. Finally run `$ python train.py` to train your model 
